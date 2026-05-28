@@ -1,0 +1,48 @@
+# ResInVAR-RL headline config (canonical) per spec section 3.1.
+#
+# This repo executes via CLI flags on invar_rl.training.stage1_rank
+# (no YAML inheritance mechanism), so this file is the canonical
+# reference for the CLI flags that the sbatch must pass. Any drift
+# between this file and the sbatch is a bug.
+#
+# CLI mapping for Stage 1 (Layer 1 finetune with target-residualization):
+#
+#   python -m invar_rl.training.stage1_rank \
+#     --fold <F> --seed <S> \
+#     --panel_kind lattice_native \
+#     --panel_end 2025-12-31 \
+#     --two_regime_val \
+#     --finetune_epochs 10 \
+#     --output_dir <OUT_DIR> \
+#     --cae-head-enabled \
+#     --cae-head-k-latent 3 \
+#     --cae-head-lambda-rec 0.1 \
+#     --cae-head-lambda-orth 0.01 \
+#     --cae-head-lr 0.001
+#
+# Stage 1 pretrain (regime-contrastive SimCLR) is UNCHANGED by Phase 2;
+# the encoder ckpt is loaded byte-identical to canonical InVAR.
+
+variant: resinvar_canonical
+base_inherits: invar_rl_canonical
+
+cae_head:
+  enabled: true
+  k_latent: 3
+  hidden_width: 64
+  dropout: 0.1
+  lambda_rec: 0.1
+  lambda_orth: 0.01
+  orthogonality_penalty: true
+  lr: 1.0e-3
+  ridge_lambda: 1.0e-3
+
+target_residualization: true
+cae_dispersion_state: true   # Wired in Phase 3 (SAC obs); Phase 2 ignores.
+
+seeds: [42, 43, 44, 45, 46]
+folds: [1, 2, 3, 4, 5]
+universes: [sp500, ndx100, nbi_enriched]
+
+# Stage 2 finetune hook (per Phase 0 path mapping):
+#   src/baselines/train_invar_clpretrain_v2.py:run_stage2_finetune

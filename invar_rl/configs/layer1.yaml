@@ -1,0 +1,25 @@
+# Layer 1 ranker architecture and training. Consumed from Phase 1 onward.
+# Present in Phase 0 with sensible defaults; no code reads it yet.
+
+model:
+  d_model: 128
+  encoder_layers: 2
+  encoder_heads: 4
+  feedforward: 256
+  dropout: 0.1
+  activation: "gelu"
+  cross_attention_layers: 2
+  cross_attention_heads: 4
+  film_gate_init: 0.0   # learned scalar gate; identity ranker at start
+
+loss:
+  kind: "cross_sectional_mse"   # alternative: "listwise_rank"
+
+training:
+  epochs: 30
+  batch_days_per_step: 1
+  learning_rate: 0.0003
+  weight_decay: 0.00001
+  grad_clip: 1.0
+  early_stop_patience: 5
+  select_on: "val_rank_ic"

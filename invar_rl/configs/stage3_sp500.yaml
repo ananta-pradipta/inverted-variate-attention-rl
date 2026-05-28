@@ -1,0 +1,30 @@
+# First-pass Stage 3 config for the real S&P 500 run (InVAR protocol).
+# Full 6-method comparison set; reduced RL budget and a high precompute
+# stride for a fast first read. Full-budget confirm comes later.
+
+lower_stack: "stage2"
+stage2_variant: "B"
+
+methods:
+  - "recurrent_ppo"
+  - "feedforward_ppo"
+  - "sac"
+  - "constant_full"
+  - "vol_target"
+  - "myopic_head"
+
+precompute_stride: 5
+
+rl:
+  total_timesteps: 6000
+  recurrent_hidden: 128
+  learning_rate: 0.0003
+  n_steps: 256
+
+vol_target:
+  annualised_target: 0.10
+
+myopic_head:
+  hidden: 64
+  epochs: 8
+  learning_rate: 0.001

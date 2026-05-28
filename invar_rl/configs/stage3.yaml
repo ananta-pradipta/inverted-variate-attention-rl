@@ -1,0 +1,35 @@
+# Stage 3 reinforcement-learning controller and baselines (Phase 5).
+# Layers 1 and 2 are frozen and their outputs precomputed; the controller
+# only observes detached values. Stage 4 joint fine-tuning is NOT run here.
+
+# Which frozen lower stack the controller sits on top of.
+lower_stack: "stage2"      # "stage2" (decision-focused) or "stage1" (pure ranking)
+stage2_variant: "B"        # which Stage 2 checkpoint to freeze when lower_stack=stage2
+
+# Exposure-control methods to train and compare.
+methods:
+  - "recurrent_ppo"        # primary controller
+  - "feedforward_ppo"      # recurrence ablation
+  - "sac"                  # off-policy baseline
+  - "constant_full"        # non-RL: constant full exposure
+  - "vol_target"           # non-RL: volatility targeting
+  - "myopic_head"          # non-RL decisive baseline (supervised exposure head)
+
+# Subsample the frozen-stack precompute tape by this stride. The per-day QP
+# solve is the dominant cost of every Stage 3 / Phase 6 run; stride > 1 gives
+# a roughly proportional speedup at the cost of tape resolution. 1 = full.
+precompute_stride: 1
+
+rl:
+  total_timesteps: 20000   # preliminary budget; raise for the full study
+  recurrent_hidden: 128
+  learning_rate: 0.0003
+  n_steps: 512             # rollout length for the on-policy methods
+
+vol_target:
+  annualised_target: 0.10  # realised-vol target for the vol-targeting baseline
+
+myopic_head:
+  hidden: 64
+  epochs: 10
+  learning_rate: 0.001

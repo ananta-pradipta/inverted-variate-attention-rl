@@ -1,0 +1,17 @@
+# Layer 2 allocation settings. Consumed from Phase 2 onward.
+# Present in Phase 0 with sensible defaults; no code reads it yet.
+
+covariance:
+  estimator: "ledoit_wolf"   # alternative: "factor_model"
+  factor_rank: 8
+  lookback: 120              # trailing 1-day-return window for the estimate
+
+qp_layer:
+  risk_aversion: 5.0         # gamma
+  per_name_bound: 0.05       # b, the per-name weight cap
+  gross_leverage: 1.0        # L1 norm of weights upper bound
+
+topk_layer:
+  k: 25
+  temperature: 0.5
+  temperature_anneal: true

@@ -1,0 +1,52 @@
+# Robust-InVAR-RL locked evaluation protocol.
+# Authority: the consolidated diagnostic report at
+# reports/invar-rl-experiment-result-all.md and the source design doc.
+# Frozen 2026-05-26; any subsequent change requires a Phase 0 re-open.
+
+universes:
+  sp500:
+    panel_kind: lattice_native
+    feature_count: 26
+    K: 50
+    wrapper: top_k_equal_weight_ls
+    embargo_days: 5
+    two_regime_val: true
+    val_window_h2: [2017, 2018]
+    folds: [1, 2, 3, 4, 5]
+    seeds: [42, 43, 44, 45, 46]
+
+  nasdaq100:
+    panel_kind: nasdaq100
+    feature_count: 26
+    K: 20
+    wrapper: top_k_equal_weight_ls
+    embargo_days: 5
+    two_regime_val: true
+    val_window_h2: [2017, 2018]
+    folds: [1, 2, 3, 4, 5]
+    seeds: [42, 43, 44, 45, 46]
+
+  biotech_nbi_enriched:
+    panel_kind: biotech_nbi_enriched
+    feature_count: 22
+    K: 25
+    wrapper: top_k_equal_weight_ls
+    embargo_days: 5
+    two_regime_val: true
+    val_window_h2: [2017, 2018]
+    folds: [1, 2, 3, 4, 5]
+    seeds: [42, 43, 44, 45, 46]
+
+evaluation:
+  primary_metric: per_cell_mean_sharpe_pooled_25
+  per_fold_metric: per_fold_mean_sharpe_5_seeds
+  variance_metric: pool_sd
+  robustness_metric: sharpe_of_sharpes
+  bootstrap:
+    method: stationary_block
+    block_lengths_days: [5, 10, 20]
+    n_replications: 1000
+  significance:
+    sharpe_ci: lo_adjusted
+    p_value: paired_block_bootstrap
+    family_correction: dsr

@@ -1,0 +1,18 @@
+# Stage 2 decision-focused training. Consumed in Phase 3.
+# Layer 1 and the Layer 2 QP are composed into one differentiable pipeline;
+# the loss is the negative realised portfolio return (optionally penalised by
+# portfolio variance), backpropagated through the QP into Layer 1.
+
+variant: "B"               # "A": fine-tune the score head only; "B": all of Layer 1
+epochs: 5
+learning_rate: 0.0001
+weight_decay: 0.00001
+grad_clip: 1.0
+variance_penalty: 0.5      # weight on the w' Sigma w penalty term
+
+# Subsample training days by this stride. The QP solve is per day and is the
+# dominant cost; the prompt frames the Stage 2 comparison as preliminary.
+train_day_stride: 5
+
+init_from_stage1: true     # warm-start Layer 1 from the Stage 1 checkpoint
+run_control: true          # also evaluate the pure-ranking control through Layer 2

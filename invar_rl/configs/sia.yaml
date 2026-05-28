@@ -1,0 +1,16 @@
+# InVAR-RL-SIA Layer 2 SAC defaults (Phase 0 plan).
+# Phase 1 smoke uses these unchanged; Phase 5 sweeps them.
+
+latent_dim: 16
+beta_kl: 0.001
+lambda_gate: 0.0001
+lambda_inv: 0.1
+actor_hidden: [64, 64]
+critic_hidden: [128, 128]
+group_source: "macro_kmeans_8"
+total_timesteps: 20000
+learning_rate: 0.0003
+buffer_size: 100000
+batch_size: 256
+gamma: 0.99
+polyak_tau: 0.005

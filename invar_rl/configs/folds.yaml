@@ -1,0 +1,27 @@
+# Walk-forward fold definitions, given as inclusive day-index ranges.
+# The embargo is the minimum number of days between any two adjacent
+# segments (train to validation, validation to test). With embargo_days=5,
+# a gap such as train end 599 to validation start 605 leaves indices
+# 600..604 (five days) unused, which satisfies the embargo.
+#
+# Exactly one fold must be flagged ood: true. The out-of-distribution stress
+# fold is never used for model selection or hyperparameter tuning.
+
+embargo_days: 5
+
+folds:
+  - name: "fold_1"
+    train: [0, 599]
+    val:   [605, 749]
+    test:  [755, 899]
+    ood:   false
+  - name: "fold_2"
+    train: [0, 899]
+    val:   [905, 1049]
+    test:  [1055, 1199]
+    ood:   false
+  - name: "fold_3_stress"
+    train: [0, 1199]
+    val:   [1205, 1349]
+    test:  [1355, 1499]
+    ood:   true

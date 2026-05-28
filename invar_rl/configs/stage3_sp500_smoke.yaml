@@ -1,0 +1,31 @@
+# Reduced Stage 3 config for the real-data pipeline smoke: just enough
+# methods to exercise the sp500 path through Stage 3 + Phase 6 quickly
+# (recurrent vs feedforward = the recurrence ablation; myopic_head =
+# decisive baseline + the dissociation analysis; constant_full = a cheap
+# reference). High precompute stride and tiny RL budget for speed; this is
+# a wiring smoke, not a result.
+
+lower_stack: "stage2"
+stage2_variant: "B"
+
+methods:
+  - "recurrent_ppo"
+  - "feedforward_ppo"
+  - "myopic_head"
+  - "constant_full"
+
+precompute_stride: 8
+
+rl:
+  total_timesteps: 3000
+  recurrent_hidden: 128
+  learning_rate: 0.0003
+  n_steps: 256
+
+vol_target:
+  annualised_target: 0.10
+
+myopic_head:
+  hidden: 64
+  epochs: 5
+  learning_rate: 0.001

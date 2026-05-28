@@ -1,0 +1,26 @@
+# Layer 3 environment, reward, and RL agent settings.
+# Consumed from Phase 4 onward. Present in Phase 0 with sensible defaults;
+# no code reads it yet.
+
+environment:
+  episode_days: 252
+  exposure_min: 0.0
+  exposure_max: 1.5
+  exposure_change_band: 0.25   # max day-to-day change in exposure
+  extra_action_knobs: false    # long-short tilt, concentration; off by default
+
+reward:
+  kind: "differential_sharpe"  # alternative: "cvar"
+  ds_decay: 0.01               # eta in the Moody and Saffell update
+  ds_variance_floor: 1.0e-6    # floor on B - A^2 so low-variance streams do not explode
+  ds_clip: 5.0                 # symmetric bound on the per-step increment
+  cvar_level: 0.05
+  drawdown_penalty: 1.0
+  turnover_penalty: 0.1
+  transaction_cost_bps: 5.0
+
+agent:
+  algorithm: "recurrent_ppo"   # baselines: "recurrent_sac", "feedforward_ppo"
+  recurrent_hidden: 128
+  total_timesteps: 200000
+  lagrangian_drawdown_constraint: false

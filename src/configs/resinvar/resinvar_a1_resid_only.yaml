@@ -1,0 +1,30 @@
+# ResInVAR-RL ablation A1: residualization only, no dispersion state.
+# Per spec section 3.2.
+#
+# Same CLI as resinvar_canonical.yaml; the only difference is the
+# Phase 3 SAC observation block does NOT include the 2-d dispersion
+# state. Phase 2 (Layer 1 only) does not touch the SAC obs path, so
+# at Phase 2 this config produces the same Layer 1 numbers as
+# resinvar_canonical.yaml; the A1-vs-canonical contrast surfaces from
+# Phase 3 onward when the dispersion-state obs block is wired.
+
+variant: resinvar_a1_resid_only
+base_inherits: invar_rl_canonical
+
+cae_head:
+  enabled: true
+  k_latent: 3
+  hidden_width: 64
+  dropout: 0.1
+  lambda_rec: 0.1
+  lambda_orth: 0.01
+  orthogonality_penalty: true
+  lr: 1.0e-3
+  ridge_lambda: 1.0e-3
+
+target_residualization: true
+cae_dispersion_state: false
+
+seeds: [42, 43, 44, 45, 46]
+folds: [1, 2, 3, 4, 5]
+universes: [sp500, ndx100, nbi_enriched]

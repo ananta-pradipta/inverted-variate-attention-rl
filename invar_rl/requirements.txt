@@ -1,0 +1,19 @@
+# Pinned environment for the three-layer regime-aware system.
+# Phase 0 only imports numpy, pandas, scikit-learn, pyyaml, torch, pytest.
+# The remaining packages are pinned now so later phases install cleanly.
+
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+PyYAML==6.0.1
+torch==2.2.2
+pytest==8.2.0
+
+# Layer 2 (Phase 2 onward)
+cvxpy==1.4.3
+cvxpylayers==0.1.6
+
+# Layer 3 (Phase 4 onward)
+gymnasium==0.29.1
+stable-baselines3==2.3.2
+sb3-contrib==2.3.0

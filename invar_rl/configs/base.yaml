@@ -1,0 +1,23 @@
+# Global settings shared by every phase.
+# Punctuation convention: no em-dashes, no en-dashes, plain text only.
+
+seeds: [42, 43, 44, 45, 46]
+device: "cpu"
+log_level: "INFO"
+
+synthetic:
+  n_tickers: 220
+  n_days: 1520
+  n_features: 16
+  macro_dim: 8
+  n_regimes: 4
+  lookback: 20
+  noise_std: 0.02
+  label_horizon: 5
+  listing_span_frac: 0.25   # tickers list within the first quarter of days
+  inactive_prob: 0.03       # per-day probability a listed ticker is untradable
+
+paths:
+  output_dir: "experiments/outputs"
+  checkpoint_dir: "experiments/checkpoints"
+  log_dir: "experiments/logs"

@@ -1,0 +1,43 @@
+# InVAR-aligned protocol for the real S&P 500 panel: 5 expanding-window
+# walk-forward folds (2015-2025) with the TWO-REGIME validation set.
+#
+# Validation is a FIXED set shared by every fold: 2017-H2 (calm) plus
+# 2018-H2 (vol-spike). Training is everything from train_start to that
+# fold's train_end EXCLUDING the two validation windows, with a 5-day
+# embargo on every segment edge and at the val/test boundary; the last
+# embargo days are trimmed off the validation set. This deliberately
+# replicates the previous InVAR / universal-headline protocol so results
+# are comparable; it is not the dataset's native contiguous split.
+#
+# OOD stress fold: fold_2_rate_stress (the rate-rotation regime carries the
+# largest train-to-test covariate shift). Exactly one fold is flagged ood.
+
+embargo_days: 5
+
+two_regime_val:
+  - ["2017-07-03", "2017-12-29"]   # calm late-bull
+  - ["2018-07-02", "2018-12-31"]   # vol-spike + Q4 sell-off
+
+train_start: "2015-01-09"
+
+folds:
+  - name: "fold_1_covid"
+    train_end: "2018-12-21"
+    test:  ["2020-01-02", "2020-12-31"]
+    ood:   false
+  - name: "fold_2_rate_stress"
+    train_end: "2020-12-23"
+    test:  ["2021-07-01", "2022-06-22"]
+    ood:   true
+  - name: "fold_3_post_stress"
+    train_end: "2021-12-23"
+    test:  ["2022-07-01", "2023-06-22"]
+    ood:   false
+  - name: "fold_4_ai_rally"
+    train_end: "2023-06-23"
+    test:  ["2024-01-02", "2024-12-31"]
+    ood:   false
+  - name: "fold_5_fed_cut"
+    train_end: "2024-12-23"
+    test:  ["2025-07-01", "2025-12-31"]
+    ood:   false

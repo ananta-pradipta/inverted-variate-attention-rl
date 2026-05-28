@@ -1,0 +1,28 @@
+# Walk-forward folds for the real S&P 500 panel, given as ISO date ranges.
+# resolve_date_folds maps these to inclusive day indices against the panel's
+# actual trading calendar (segment starts snap forward to the first trading
+# day on/after; ends snap backward to the last on/before). 5-day embargo at
+# every adjacent boundary (required: the target is a forward return).
+#
+# The three regimes follow the documented universal-panel structure. The
+# post-stress fold is the out-of-distribution stress fold; it is never used
+# for model selection or tuning.
+
+embargo_days: 5
+
+folds:
+  - name: "fold_1_covid"
+    train: ["2015-01-09", "2018-12-21"]
+    val:   ["2019-01-02", "2019-12-23"]
+    test:  ["2020-01-02", "2020-12-31"]
+    ood:   false
+  - name: "fold_2_rate_stress"
+    train: ["2015-01-09", "2020-12-23"]
+    val:   ["2021-01-04", "2021-06-23"]
+    test:  ["2021-07-01", "2022-06-22"]
+    ood:   false
+  - name: "fold_3_post_stress"
+    train: ["2015-01-09", "2021-12-23"]
+    val:   ["2022-01-03", "2022-06-23"]
+    test:  ["2022-07-01", "2022-12-22"]
+    ood:   true

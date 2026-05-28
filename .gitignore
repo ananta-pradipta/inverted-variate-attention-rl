@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# Environments
+.venv/
+venv/
+env/
+
+# Data, model and experiment artifacts (kept out of the code mirror)
+*.npz
+*.pt
+*.pth
+*.pkl
+*.parquet
+*.csv
+*.zip
+data/
+outputs/
+results/
+logs/
+cache/
+experiments/checkpoints/
+wandb/
+mlruns/
+
+# Editor / OS
+*.swp
+.idea/
+.vscode/

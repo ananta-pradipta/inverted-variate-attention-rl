@@ -1,0 +1,37 @@
+# Real S&P 500 universal-panel run. panel_kind=sp500 selects the real
+# loader; the synthetic block below is unused here but kept because the
+# loader parses it unconditionally. Checkpoints and outputs use distinct
+# directories so the synthetic-run artifacts are never overwritten.
+
+seeds: [42, 43, 44, 45, 46]
+device: "cpu"
+log_level: "INFO"
+
+panel_kind: "sp500"
+
+sp500:
+  data_root: "~/phd-research/data"   # contains lattice/ and raw/
+  lookback: 20
+  label_horizon: 5
+  # Fix the daily cross-section to a constant size (top-N by liquidity)
+  # so the differentiable QP compiles ONE problem instead of one per
+  # distinct daily active count. Days with fewer than max_active active
+  # names are skipped (sparse early-panel days).
+  max_active: 400
+
+synthetic:                  # unused when panel_kind=sp500
+  n_tickers: 220
+  n_days: 1520
+  n_features: 16
+  macro_dim: 8
+  n_regimes: 4
+  lookback: 20
+  noise_std: 0.02
+  label_horizon: 5
+  listing_span_frac: 0.25
+  inactive_prob: 0.03
+
+paths:
+  output_dir: "experiments/outputs_sp500"
+  checkpoint_dir: "experiments/checkpoints_sp500"
+  log_dir: "experiments/logs_sp500"
