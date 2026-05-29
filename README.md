@@ -1,18 +1,13 @@
 # InVAR-RL: Reinforcement Learning as a Macro-State-Conditional Information-Transfer Layer
 
 **InVAR-RL** reframes the role of reinforcement learning (RL) in cross-sectional
-equity portfolio management. Instead of casting RL as a high-dimensional
-portfolio-allocation optimiser (the conventional whole-stack view, *Option C*),
-InVAR-RL uses it as a **macro-state-conditional information-transfer layer**: a
-soft actor-critic controller constrained to a single 1-D exposure scalar
-(*Option A*), with alpha extraction handed off to a separately pretrained
+equity portfolio management. The conventional approach lets a single RL policy
+emit the full per-stock weight vector, so RL must simultaneously learn *what to
+hold* and *how much*. Instead, InVAR-RL uses RL as a **macro-state-conditional
+information-transfer layer**: a soft actor-critic controller constrained to a
+single 1-D exposure scalar that decides only *how much* market exposure to take,
+while alpha extraction (*what to hold*) is handed off to a separately pretrained
 supervised ranker.
-
-This repository is the public code mirror for the paper *"Reinforcement
-Learning as a Macro-State-Conditional Information-Transfer Layer in
-Cross-Sectional Equity Portfolios"* (Ananta Pradipta and Zhi Wei, New Jersey
-Institute of Technology). Paper drafts and internal design documents are kept
-in a private repository.
 
 ## Abstract
 
@@ -200,19 +195,30 @@ Three families, all retuned on the identical panel and protocol:
 - **Cross-sectional rankers** (each wrapped with the same fixed top-K rule):
   MASTER (AAAI'24), FactorVAE (AAAI'22), iTransformer (ICLR'24), StockMixer
   (AAAI'24), DySTAGE (ICAIF'24), MERA (WWW'25).
-- **Whole-stack RL** (Option C): FinRL (PPO/A2C/DDPG), StockFormer, DeepTrader.
+- **Whole-stack RL** (one policy emits the full weight vector): FinRL
+  (PPO/A2C/DDPG), StockFormer, DeepTrader.
 - **Non-learning**: buy-and-hold, equal-weight, momentum (12-2), reversal-1M,
   volatility-targeted market.
 
-## Citation
+## References
 
-```bibtex
-@inproceedings{pradipta2027invarrl,
-  title     = {Reinforcement Learning as a Macro-State-Conditional
-               Information-Transfer Layer in Cross-Sectional Equity Portfolios},
-  author    = {Pradipta, Ananta and Wei, Zhi},
-  booktitle = {Proceedings of the 33rd ACM SIGKDD Conference on Knowledge
-               Discovery and Data Mining (KDD)},
-  year      = {2027},
-}
-```
+Cross-sectional ranker baselines:
+
+1. Li et al. (2024). "MASTER: Market-Guided Stock Transformer for Stock Price Forecasting." AAAI.
+2. Duan et al. (2022). "FactorVAE: A Probabilistic Dynamic Factor Model for Prediction and Risk Attribution." AAAI.
+3. Liu et al. (2024). "iTransformer: Inverted Transformers Are Effective for Time Series Forecasting." ICLR.
+4. Fan and Shen (2024). "StockMixer: A Simple yet Strong MLP-Based Architecture for Stock Price Forecasting." AAAI.
+5. Gu et al. (2024). "DySTAGE: Dynamic Spatio-Temporal Attention Graph Embedding for Stock Ranking." ICAIF.
+6. (MERA) (2025). "Mixture-of-Experts Retrieval-Augmented model for stock prediction." WWW.
+
+Whole-stack reinforcement-learning portfolio systems:
+
+7. Liu et al. (2021). "FinRL: A Deep Reinforcement Learning Library for Automated Stock Trading in Quantitative Finance." ACM ICAIF.
+8. Gao et al. (2023). "StockFormer: Learning Hybrid Trading Machines with Predictive Coding." IJCAI.
+9. Wang et al. (2021). "DeepTrader: A Deep Reinforcement Learning Approach for Risk-Return Balanced Portfolio Management with Market Conditions Embedding." AAAI.
+
+Method and finance background:
+
+10. Haarnoja et al. (2018). "Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor." ICML.
+11. DeMiguel, Garlappi, and Uppal (2009). "Optimal Versus Naive Diversification: How Inefficient Is the 1/N Portfolio Strategy?" Review of Financial Studies.
+12. Hamilton (1989). "A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle." Econometrica.
