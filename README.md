@@ -91,23 +91,25 @@ All three universes are evaluated under one identical five-fold protocol.
 - 5 seeds (42-46) per cell = 25 cells per universe; leakage audited at three
   points. Primary metric: **pooled daily annualised Sharpe**.
 
+![Expanding-window walk-forward protocol](docs/figures/protocol_folds.png)
+
+Each fold trains on all history up to a 5-day embargo before its test window,
+validates on the fixed two-segment window (2017-H2 + 2018-H2), and tests on a
+macro-distinct regime (F1 COVID, F2 rate-hike rotation, F3 post-shock and
+banking, F4 AI mega-cap rally, F5 Fed-cut).
+
 ## Results
 
-Long-only protocol (Table 6, pooled over 25 cells per universe). SR =
-annualised Sharpe (primary), PR = mean per-fold cumulative return, AR =
-annualised return.
+Overall portfolio metrics under the long-only protocol, pooled over the 25
+(fold, seed) cells per universe. SR = annualised Sharpe (primary), PR = mean
+per-fold cumulative return, AR = annualised return.
 
-| Method                         | S&P 500 SR | NASDAQ-100 SR | Biotech NBI SR |
-|--------------------------------|-----------|---------------|----------------|
-| FactorVAE (AAAI'22)            | 0.26      | 0.53          | 0.35           |
-| MASTER (AAAI'24)              | 0.45      | 0.64          | 0.45           |
-| StockMixer (AAAI'24)         | 0.28      | 0.52          | 0.39           |
-| DySTAGE (ICAIF'24)           | 0.39      | 0.50          | 0.39           |
-| FinRL (deep RL, ICAIF'20)    | 0.13      | 0.15          | 0.13           |
-| StockFormer (IJCAI'23)       | 0.10      | 0.80          | 0.49           |
-| **InVAR-RL (ours)**          | **0.85**  | **0.84**      | **0.62**       |
+![Table 6: long-only portfolio metrics](docs/figures/table6_long_only.png)
 
-InVAR-RL wins the long-only Sharpe on all three universes. The edge is downside
+![Long-only Sharpe: InVAR-RL versus baselines](docs/figures/long_only_sharpe.png)
+
+InVAR-RL wins the long-only Sharpe on all three universes (0.85 S&P 500, 0.84
+NASDAQ-100, 0.62 biotech NBI). The edge is downside
 management on the F2 rate-stress fold: on S&P 500 per-fold Sharpe (Figure 7b),
 InVAR-RL draws down to only -0.31 on F2 while the whole-stack RL agents FinRL
 (-1.15) and StockFormer (-1.34) collapse.
