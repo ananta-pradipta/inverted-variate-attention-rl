@@ -1,4 +1,4 @@
-# InVAR-RL: Reinforcement Learning as a Macro-State-Conditional Information-Transfer Layer
+# InVAR-RL: Reinforcement Learning as Information-Transfer Layer over Inverted-Variate Attention Ranker
 
 **InVAR-RL** reframes the role of reinforcement learning (RL) in cross-sectional
 equity portfolio management. The conventional approach lets a single RL policy
