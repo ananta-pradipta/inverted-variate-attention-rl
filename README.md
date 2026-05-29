@@ -29,6 +29,14 @@ the source of the rate-stress robustness and transfers across universes.
 
 ## Architecture
 
+![InVAR-RL two-layer architecture](docs/figures/architecture.png)
+
+A macro-state-contrastive InVAR ranker (Layer 1) feeds a fixed parameter-free
+top-K equal-weight long-short wrapper, whose book is scaled by a scalar exposure
+`e_t in [0, 1.5]` emitted by the soft actor-critic controller (Layer 2). There
+is no gradient flow between the layers, and Layer 1 is frozen during Layer-2
+training.
+
 InVAR-RL composes **two learned layers** joined by a fixed, parameter-free
 wrapper. There is no gradient flow between the layers, and Layer 1 is frozen
 while Layer 2 trains. At inference the cascade is:
